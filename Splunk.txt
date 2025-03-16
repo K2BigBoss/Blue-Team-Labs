@@ -1,0 +1,379 @@
+    Splunk real vaqt rejimida tarmoq va mashina jurnallarini to'plash, tahlil qilish va o'zaro bog'lash imkoniyatini beruvchi bozordagi yetakchi SIEM yechimlaridan biri hisoblanadi. Splunk uchta asosiy komponentga ega, ya'ni Forwarder, Indexer va Search Head.
+
+    Splunk Forwarder – bu turli manbalardan log ma'lumotlarini yig‘ish, qayta ishlash va Splunk Indexer ga yuborish uchun mo‘ljallangan yengil dasturiy komponent. U real vaqt rejimida ma'lumotlarni qabul qilishni ta’minlaydi va loglarni samarali hamda xavfsiz uzatishga yordam beradi. Splunk Forwarder ning ikki asosiy turi mavjud:
+	Universal Forwarder (UF): Minimal tizim resurslarini ishlatadigan agent bo‘lib, xom ma’lumotlarni indekslashsiz uzatadi.
+	Heavy Forwarder (HF): Ma’lumotlarni yuborishdan oldin ularni tahlil qilish, filtrdan o‘tkazish va yo‘naltirish imkoniyatiga ega, lekin ko‘proq tizim resurslarini talab qiladi.
+
+    Splunk Indexer – bu Splunk ning asosiy komponenti bo‘lib, mashina tomonidan yaratilgan ma’lumotlarni qayta ishlash, indekslash va saqlash orqali tezkor qidiruv, tahlil va vizuallashtirishni ta’minlaydi. U Splunk Forwarder yoki boshqa manbalardan xom ma’lumotlarni qabul qiladi, ularni hodisalarga ajratadi, indekslaydi va qidiruvga tayyorlaydi.
+
+    Splunk Search Head – bu foydalanuvchilarga indekslangan ma’lumotlarni qidirish, tahlil qilish va vizuallashtirish uchun veb-interfeys taqdim etuvchi Splunk komponenti. U qidiruv so‘rovlarini bir yoki bir nechta Splunk Indexer ga yuboradi, natijalarni to‘playdi va ularni dashboardlar, hisobotlar yoki ogohlantirishlar shaklida aks ettiradi.
+
+Ma'lumot manbalari event logs, website logs, firewall logs va boshqalar bo'lishi mumkin.
+
+    Cyber Kill Chain – bu Lockheed Martin tomonidan ishlab chiqilgan kiberxavfsizlik modeli bo‘lib, kiberhujumlarning bosqichlarini tavsiflaydi – dastlabki razvedkadan tortib, ma’lumotlarni o‘g‘irlashgacha. Ushbu model tashkilotlarga hujumchilarning taktikalarini tushunish, tahdidlarni aniqlash va oldini olishga yordam beradi.
+    Cyber Kill Chain bosqichlari:
+	Razvedka (Reconnaissance): Hujumchilar nishon haqida ma’lumot to‘playdi.
+	Qurollanish (Weaponization): Zararkunanda yuklamalar (masalan, zararli dasturlar) tayyorlanadi.
+	Yetkazib berish (Delivery): Yuklama fishing, eksploit yoki boshqa usullar orqali jo‘natiladi.
+	Ekspluatatsiya (Exploitation): Jabrlanuvchi tizimida zararli kod ishga tushiriladi.
+	O‘rnatish (Installation): Hujumchiga doimiy kirish imkonini beruvchi zararli dastur o‘rnatiladi.
+	Boshqaruv va nazorat (Command & Control - C2): Hujumchilar tizim ustidan masofaviy nazorat o‘rnatadi.
+	Maqsadga erishish (Actions on Objectives): Ma’lumotlarni o‘g‘irlash, tizimni buzish yoki boshqa hujumlar amalga oshiriladi.
+
+
+Kuzatilayotgan xostlar va jurnal manbalarining toʻliq rasmini olish uchun
+	Search -> Data summary
+
+Qiziqarli log manbalaridan ba'zilari:
+	wineventlog - Unda Windows voqealari jurnallari mavjud
+	winRegistry - Unda ro'yxatga olish kitobini yaratish / o'zgartirish / o'chirish va boshqalar bilan bog'liq jurnallar mavjud.
+	XmlWinEventLog - Unda sysmon hodisalar jurnallari mavjud. Bu tergov nuqtai nazaridan juda muhim jurnal manbai.
+	fortigate_utm - Unda Fortinet xavfsizlik devori jurnallari mavjud
+	iis - Unda IIS veb-server jurnallari mavjud
+	Nessus:scan - Unda Nessus zaiflik skaneri natijalari mavjud.
+	Suricata - Unda Suricata IDS dan ogohlantirishlar tafsilotlari mavjud. Ushbu jurnal manbasi qaysi ogohlantirish ishga tushirilganini va ogohlantirish nima sababdan bo'lganini ko'rsatadi - bu tergov uchun juda muhim jurnal manbai.
+	stream:http - U http trafik bilan bog'liq tarmoq oqimini o'z ichiga oladi .
+	stream: DNS - U DNS- trafik bilan bog'liq tarmoq oqimini o'z ichiga oladi .
+	stream: icmp - U icmp trafik bilan bog'liq tarmoq oqimini o'z ichiga oladi.
+
+    Reconnaissance Phase (Razvedka bosqichi)
+    Razvedka - bu maqsad haqida ma'lumot topish va to'plashga urinish. Bu foydalanilayotgan tizim, veb-ilova, xodimlar yoki joylashuv va boshqalar haqida ma'lumot bo'lishi mumkin.
+
+			search -> index=botsv1 imreallynotbatman.com
+    Biz botsv1 indeksidagi hodisalar loglarini qidiramiz, unda imreallynotbatman.com so‘zi mavjud. Sourcetype maydonida ushbu qidiruv so‘ziga tegishli log manbalari quyidagicha ekanligini ko‘rdik:
+
+🔹 Suricata
+🔹 stream:http
+🔹 fortigate_utm
+🔹 iis
+
+    Bu log manbalarining nomlariga qarab, ularning qanday ma'lumotlarni o‘z ichiga olishini taxmin qilish mumkin. Har bir tahlilchi muayyan vaziyatni tekshirishda turli yondashuvlarga ega bo‘lishi mumkin.
+
+    Birinchi vazifamiz – veb-serverimizga razvedka faoliyatini amalga oshirishga harakat qilayotgan IP-manzilni aniqlash. Birinchi navbatda stream:http log manbasini tekshiramiz, chunki unda HTTP trafik loglari mavjud.
+
+			search -> index=botsv1 imreallynotbatman.com sourcetype=stream:http
+
+Ushbu so‘rov faqat stream:http log manbasida imreallynotbatman.com so‘zini izlaydi. http trafik jurnallarini o'z ichiga olgan jurnal manba oqimini ko'rib chiqaylik va src_ip chap paneldagi maydonni ko'raylik. Hozircha biz src_ip maydonida ikkita IP-manzilni topdik:
+🔹 40.80.148.42
+🔹 23.22.63.114
+Birinchi IP (40.80.148.42) loglarning katta qismida uchraydi, bu esa uni asosiy gumondor sifatida ko‘rsatmoqda. Tasdiqlash uchun har bir IP-ni alohida bosib, qidiruvga qo‘shib, loglarni tahlil qilishingiz mumkin.
+
+1. Bir Suricata alerti ushbu hujum urinishiga bog‘liq bo‘lgan CVE qiymatini ko‘rsatdi. CVE qiymati qanday?
+			search -> index=botsv1 imreallynotbatman.com sourcetype=suricata
+				alert.signature -> CVE-2014-6271
+
+2. Bizning veb-serverimiz qaysi CMS (Content Management System) dan foydalanmoqda?
+			search -> index=botsv1 imreallynotbatman.com dest_ip="192.168.250.70"
+				dest_headers -> joomla
+
+3. Hujumchi skanerlash urinishlarini amalga oshirish uchun qaysi veb-skannerdan foydalangan?
+			search -> index=botsv1 imreallynotbatman.com c_ip="40.80.148.42"
+				src_headers -> Acunetix
+
+4. imreallynotbatman.com serverining IP manzili nima?
+			search -> index=botsv1 imreallynotbatman.com sourcetype="stream:http"
+				dst_ip = 192.168.250.70
+
+
+	Exploitation Phase (Ekspluatatsiya bosqichi)
+	
+Buzg'unchi tizimga/serverga kirish uchun zaiflikdan foydalanishi kerak.
+
+Quyidagi qidiruv so‘rovini ishlatib, har bir source IP tomonidan veb-serverga qarshi nechta urinish bo‘lganini ko‘ramiz.
+			
+	search -> index=botsv1 imreallynotbatman.com sourcetype=stream* | stats count(src_ip) as Requests by src_ip | sort - Requests
+
+			40.80.148.42	->	17483 (Count)
+
+	index=botsv1 → "botsv1" indeksidagi loglarni qidiradi. imreallynotbatman.com → "imreallynotbatman.com" so‘zini o‘z ichiga olgan loglarni filtrlaydi. sourcetype=stream* → Sourcetype "stream" bilan boshlanadigan loglarni qidiradi (masalan, stream:http). | stats count(src_ip) as Requests by src_ip → src_ip maydonini sanab chiqadi va har bir source IP bo‘yicha guruhlaydi. | sort - Requests → Natijalarni kamayish tartibida saralaydi (ko‘p so‘rov yuborgan IP'lar birinchi bo‘ladi).
+
+			search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70"
+
+			src_ip -> 40.80.148.42	    ->	    17483 (Count)
+
+					http_method
+
+				POST 	     14,238 	70.408% 	
+				GET 	     5,976 	29.552% 	
+				OPTIONS	     5 	        0.025% 	
+				CONNECT      1 	        0.005% 	
+				PROPFIND     1 	        0.005% 	
+				TRACE 	     1 	        0.005% 	
+
+
+			search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST
+
+ 			src_ip -> 40.80.148.42	    ->	     12844 (Count)
+
+
+	Exploitation Phase (Ekspluatatsiya bosqichi)
+
+Buzg'unchi tizimga/serverga kirish uchun zaiflikdan foydalanishi kerak.
+
+Veb-serverga nisbatan har bir source IP tomonidan kelgan so'rovlar sonini ko'rish uchun 
+quyidagi qidiruv so'rovidan foydalanamiz:
+
+	search -> index=botsv1 imreallynotbatman.com sourcetype=stream* 
+		  | stats count(src_ip) as Requests by src_ip 
+		  | sort - Requests
+
+		   src_ip        Requests
+		40.80.148.42	  17483
+		23.22.63.114	  1235
+
+192.168.250.70 IP-ga ega bo'lgan veb-serverimizga yuborilgan so'rovlarni ko'rsatish 
+uchun natijani qisqartiramiz.
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70"
+
+Ushbu so'rov IP 192.168.250.70 ga kiruvchi barcha trafikni qidiradi.
+				   Values	Count
+	src_ip -> 		40.80.148.42 	17,546 	
+				23.22.63.114 	1,429
+
+	http_method ->		Values 	Count 	% 	 
+				POST 	14,238 	70.408% 	
+				GET 	5,976 	29.552% 	
+
+POST so'rovlari orqali qanday trafik kelishini ko'rish uchun quyidagi qidiruvni amalga oshiramiz.
+	
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST
+
+	src_ip ->	Values		Count 	% 	 
+			40.80.148.42 	12,844 	96.892% 	
+			23.22.63.114 	412 	3.108%
+
+	
+	uri -> 		Top 10 Values 				Count 	% 	 
+			/joomla/index.php/component/search/ 	11,923 	89.944% 	
+			/joomla/index.php 			787 	5.937% 	
+			/joomla/administrator/index.php 	425 	3.206% 	
+			/ 					6 	0.045%
+					.........
+
+Count -> so'rovlar soni
+
+	Joomla CMS-ning administratorga kirish sahifasi -> /joomla/administrator/index.php.
+Bu uri veb-portalga kirish uchun kirish sahifasini o'z ichiga oladi, shuning uchun biz ushbu 
+administrator paneliga potentsial brute-force hujumi uchun keladigan trafikni tekshiramiz.
+
+	search -> index=botsv1 imreallynotbatman.com sourcetype=stream:http 
+		  dest_ip="192.168.250.70"  uri="/joomla/administrator/index.php"
+
+
+	search -> index="botsv1" sourcetype="stream:http" dest_ip="192.168.250.70" 
+		  uri="/joomla/administrator/index.php" 
+		  | table _time uri src_ip dest_ip form_data
+
+ _time, uri, src_ip, dest_ip, form_data nomli muhim maydonlarni o'z ichiga olgan jadval yaratadi.
+username maydoni, u barcha hodisalarda admin foydalanuvchi nomini o‘z ichiga oladi, va 
+passwd maydoni, unda bir nechta parollar mavjud. Bu esa 23.22.63.114 IP-manzilidan hujum qilgan 
+tajovuzkor parolni taxmin qilishga harakat qilganini va brute-force usuli bilan ko‘plab 
+parollarni sinab ko‘rganini ko‘rsatadi.
+
+qidiruvga form_data=usernamepasswd* qo‘shish orqali biz faqat username va passwd qiymatlarini 
+o‘z ichiga olgan loglarni ko‘rsatishimiz mumkin.
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST 
+		  uri="/joomla/administrator/index.php" form_data=*username*passwd* 
+		  | table _time uri src_ip dest_ip form_data
+
+Hujumchi sinovdan o'tqazgan barcha parollarni topish uchun Regex dan foydalanamiz.
+
+	search -> index="botsv1" sourcetype=stream:http dest_ip=192.168.250.70 
+		  http_method=POST uri="/joomla/administrator/index.php" 
+		  form_data=*username*passwd* 
+		  | rex field=form_data "passwd=(?<creds>\w+)" 
+    		  | table src_ip creds
+
+	   src_ip			creds
+	23.22.63.114 			topgun
+	23.22.63.114			parker
+			.......(413 ta)
+
+Biz veb-serverning boshqaruv panelidagi admin foydalanuvchi nomiga qarshi ishlatiladigan 
+parollarni chiqarib oldik. Agar biz loglardagi maydonlarni tekshirsak, http_user_agent 
+quyida ko'rsatilganidek, maydonga nisbatan ikkita qiymat topamiz:
+
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST 
+		  uri="/joomla/administrator/index.php" form_data=*username*passwd*
+
+	Values 						Count 	% 	 
+	Python-urllib/2.7 				412 	99.758% 	
+	Mozilla/5.0 (Windows NT 6.1; WOW64; 
+	Trident/7.0; rv:11.0) like Gecko 		1 	0.242%
+
+
+Birinchi qiymat tajovuzkor bizning serverimizga qo'pol kuch hujumini avtomatlashtirish uchun 
+python skriptidan foydalanganligini aniq ko'rsatadi. Ammo bitta so'rov Mozilla brauzeridan keldi.
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST 
+		  form_data=*username*passwd* | rex field=form_data "passwd=(?<creds>\w+)" 
+		  |table _time src_ip uri http_user_agent creds
+
+
+	search -> index="botsv1" sourcetype="stream:http" dest_ip="192.168.250.70" http_method=POST 
+		  form_data=*username*passwd* 
+		  | rex field=form_data "username=(?<creds>\w+)"
+		  | rex field=form_data "passwd=(?<pass>\w+)"
+		  | table_time src_ip uri http_user_agent creds pass
+
+
+Installation Phase (O'rnatish bosqichi)
+Ushbu bosqichda tajovuzkor zararli dasturlar, orqa eshiklar (backdoor) yoki boshqa zararli yuklamalarni o‘rnatib, 
+tizimga uzluksiz kirish va boshqaruv imkoniyatini qo‘lga kiritadi. Ko‘pincha hujumchilar masofaviy kirish 
+troyanlari (RATs), klaviatura kuzatuvchilar (keylogger) yoki rootkitlardan foydalanib, aniqlanishdan qochish va 
+tizimga uzoq muddatli kirishni ta’minlashga harakat qilishadi.
+
+.exe fayllari bilan bog‘liq yozuvlarni qidiradi (masalan, yuklab olingan yoki bajarilgan .exe fayllari
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" *.exe
+
+
+	part_filename{} -> 	Values 		Count 		% 	 
+				3791.exe 	1 	100% 	
+				agent.php 	1 	100% 	
+
+
+	search -> index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" 
+		  "part_filename{}"="3791.exe"
+
+		
+	c_ip -> 	Values 		Count 	   % 	 
+			40.80.148.42 	1 	  100%
+
+3791.exe fayli serverga yuklanganligini aniqladik. Bu fayl serverda bajarilganmi? Bu savolga javob berish uchun 
+xostga asoslangan log manbalaridan loglarni ko'rsatish uchun qidiruv so'rovimizni qisqartirishimiz kerak.
+
+	search -> index="botsv1" "3791.exe"
+
+	sourcetype -> 		Values 			Count 	  % 	 
+				xmlwineventlog 		69 	90.789% 	
+				wineventlog 		3 	3.947% 	
+				stream:http 		2 	2.632% 	
+				fortigate_utm 		1 	1.316% 	
+				suricata 		1 	1.316%
+
+Ya'ni bu faqat http loglarini emas barcha loglarni ko'rsatadi. Biz sysmon dan foydalanishimiz va dasturni bajarish 
+uchun EventCode=1 ga qarashimiz mumkin.
+Event ID 1: Process Creation
+
+	search -> index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1
+
+Ushbu so'rov jurnallarda "3791.exe" atamasini o'z ichiga olgan yaratish jarayoni jurnallarini qidiradi.
+
+	CommandLine -> 		Values 						Count 		 % 	 
+				C:\Windows\system32\cmd.exe 			2 		40% 	
+				3791.exe 					1 		20% 	
+				\??\C:\Windows\system32\conhost.exe 0xffffffff 	1 		20% 	
+				cmd.exe /c "3791.exe 2&gt;&amp;1" 		1 		20% 	
+
+
+Sysmon yaratilayotgan jarayonlarning Xesh qiymatini ham to'playdi. 3791.exe dasturining MD5 HASHi nima?
+
+	search -> index="botsv1" "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 
+		  | table _time CommandLine Hashes
+
+				MD5=AAE3F5A29935E6ABCC2C2754D12A9AF0
+
+Loglarga qarab, serverda 3791.exe dasturini qaysi foydalanuvchi bajarganligini toping?
+
+		search -> index="botsv1" "3791.exe" sourcetype="XmlWinEventLog" EventCode=1
+			  | table _time CommandLine User
+
+					NT AUTHORITY\IUSR
+
+Action on Objective (Maqsad bo'yicha harakat)
+Dushmanning muvaffaqiyatli hujumi tufayli veb-sayt buzilganligi sababli, veb-saytga nima sabab bo'lganini 
+yaxshiroq tushunish foydali bo'ladi.
+
+Suricata loglari — bu Suricata tarmoq hujumlarini aniqlash va oldini olish tizimi (IDS/IPS) tomonidan yaratilgan 
+yozuvlardir. Ushbu loglar tarmoq faoliyati, xavfsizlik ogohlantirishlari va protokolga asoslangan metadata haqida 
+ma’lumot berib, kiber tahdidlarni aniqlash va tahlil qilishga yordam beradi.
+
+
+	search -> index=botsv1 dest=192.168.250.70 sourcetype=suricata
+
+	src -> 		   Values 	       Count 	  % 	 
+			192.168.2.50 		211 	50.119% 	
+			192.168.250.70 		210 	49.881% 	
+
+Loglar server bilan aloqa qiladigan tashqi IP-ni ko'rsatmaydi. Har qanday aloqa serverdan kelib chiqqanligini 
+bilish uchun oqim yo'nalishini o'zgartiraylik.
+	
+	search -> index="botsv1" src="192.168.250.70" sourcetype=suricata
+
+	dest_ip -> 	Values 		  Count 	  % 	 
+			40.80.148.42 	  10,317 	81.874% 	
+			23.22.63.114 	  1,294 	10.269% 	
+			192.168.250.40 	   758 	         6.015%
+
+
+	search -> index="botsv1" src="192.168.250.70" sourcetype=suricata dest_ip="23.22.63.114"
+
+	url ->                    Values 			  Count 	  % 	 
+			/joomla/administrator/index.php 	  1,235 	95.736% 	
+     			/joomla/agent.php 	 	    	    52 	         4.031% 	
+			/poisonivy-is-coming-for-you-batman.jpeg    3 		 0.232%
+
+URL maydonida 2 ta PHP fayli va bitta jpeg fayli ko'rsatilgan. Ushbu jpeg fayl qiziqarli ko'rinadi. Keling, 
+qidiruv so'rovini o'zgartiramiz va bu jpeg fayli qaerdan kelganini ko'rib chiqamiz.
+
+	search -> index=botsv1 url="/poisonivy-is-coming-for-you-batman.jpeg" dest_ip="192.168.250.70" 
+		  | table _time src dest_ip http.hostname url
+
+Yakuniy natija shubhali jpeg poisonivy-is-coming-for-you-batman.jpeg tajovuzkorning xostidan yuklab olinganini 
+aniq ko'rsatib turibdi prankglassinebracket.jumpingcrab.com, bu saytni buzgan.
+
+Fortigate Firewall "fortigate_utm" tajovuzkor IP 40.80.148.42 dan SQL urinishini aniqladi. SQL Injection 
+urinishida ishga tushirilgan qoidaning nomi nima?
+
+	search -> index="botsv1" src_ip="40.80.148.42" sourcetype="fortigate_utm"
+
+	attack -> 	Top 10 Values 					Count 	  % 	 
+		Acunetix.Web.Vulnerability.Scanner 			4,230 	94.272% 	
+		HTTP.URI.SQL.Injection 					199 	4.435% 	
+		Bash.Function.Definitions.Remote.Code.Execution 	18 	0.401%
+
+
+Command and Control (Buyruq va boshqaruv):
+Hujumchi faylni serverga yuklaganidan so‘ng uni buzib tashladi. Buni amalga oshirish jarayonida hujumchi zararli IP-manzilni aniqlash uchun Dynamic DNS-dan foydalangan. Bizning maqsadimiz hujumchi DNS orqali qaysi IP-manzilni tanlaganini aniqlash bo‘ladi.
+
+search -> index=botsv1 sourcetype=fortigate_utm "poisonivy-is-coming-for-you-batman.jpeg"
+
+url ->       		Values 								Count	 
+    prankglassinebracket.jumpingcrab.com:1337/poisonivy-is-coming-for-you-batman.jpeg 	  3
+
+Weaponization (Qurollanish)
+Qurollanish bosqichida raqiblar quyidagi harakatlarni amalga oshirishi mumkin:
+	Dastlabki kirish huquqini qo‘lga kiritish yoki aniqlashdan qochish uchun zararli dastur yoki hujumga yo‘naltirilgan hujjatlar yaratish.
+	Foydalanuvchilarni chalg‘itish uchun nishon domeniga o‘xshash domenlarni tashkil etish.
+	Post-ekspluatatsiya jarayonida aloqa va faoliyatni boshqarish uchun Command and Control (C2) server yaratish.
+
+Robtex - bu IP manzillar, domen nomlari va boshqalar haqida ma'lumot beruvchi Threat Intel sayti.
+
+https://www.robtex.com/ip-lookup/
+
+Virustotal - bu shubhali fayllar, domenlar, IP va hokazolarni tahlil qilish uchun ishlatiladigan OSINT sayti.
+
+Virustotal -> url -> 23.22.63.114 -> RELATIONS
+Domenlar ro'yxatida biz tajovuzkor bilan bog'langan domenni ko'rdik www.po1s0n1vy.com.
+
+Shubhali domenlarni https://otx.alienvault.com orqali qidirish. Unga bog'langan emaillarni topish.
+
+Delivery (Yetkazib berish)
+
+Hujumchilar dastlabki kirish huquqini qo‘lga kiritish yoki mudofaani chetlab o‘tish uchun zararli dasturlar (malware) yaratib, qurilmalarga yuqtirishadi va uni turli yo‘llar bilan tarqatish usullarini izlashadi. Biz ushbu dushmanga tegishli turli IP manzillar, domenlar va elektron pochta manzillarini aniqladik. Ushbu darsdagi vazifamiz – mavjud ma’lumotlardan foydalanib, turli Threat Hunting platformalari va OSINT saytlarida dushman bilan bog‘liq zararli dasturlarni aniqlashdan iborat bo‘ladi.
+
+OSINT sites:
+
+Virustotal
+ThreatMiner
+Hybrid-Analysis
+
+https://www.threatminer.org/host. php ?q=23.22.63.114#gsc.tab=0&gsc.q=23.22.63.114&gsc.page=1
+https://www.hybrid-analysis.com/sample/9709473ab351387aab9e816eff3910b9f28a7a70202e250ed46dba8f820f34a8?environmentId=100
+
+
+
