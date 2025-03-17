@@ -9,3 +9,15 @@
   **4769**	Kerberos Service Ticket (TGS) issued  
   **4771**	Kerberos authentication failure  
   **4740**	User account locked out (Foydalanuvchi akkaunti blokland)  
+
+
+**2. Account & Group Changes**
+ **4720**	A new user account was created
+ **4722**	A user account was enabled
+ **4725**	A user account was disabled
+ **4726**	A user account was deleted
+ **4738**	A user account was modified
+ **4732**	A user was added to a security-enabled group
+ **4733**	A user was removed from a security-enabled group
+ **4756**	A user was added to a privileged group (Administrators, Domain Admins)
+ **4757**	A user was removed from a privileged group
