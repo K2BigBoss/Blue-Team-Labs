@@ -21,3 +21,10 @@
  **4733**	A user was removed from a security-enabled group (Foydalanuvchi guruhdan olib tashlandi)  
  **4756**	A user was added to a privileged group (Administrators, Domain Admins) (Foydalanuvchi   muhim guruhga qo‘shildi (Administrators, Domain Admins))  
  **4757**	A user was removed from a privileged group (Foydalanuvchi muhim guruhdan olib tashlandi)    
+
+**3. Kerberos & NTLM Authentication Events**
+Event ID	Description
+4768	A Kerberos TGT was issued
+4769	A Kerberos service ticket was issued
+4771	Kerberos pre-authentication failed
+4776	NTLM authentication request to Domain Controller
