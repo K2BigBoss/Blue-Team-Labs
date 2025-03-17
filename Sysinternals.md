@@ -6,3 +6,8 @@ Sysinternals vositalari Windows-ga asoslangan 70 dan ortiq vositalarning to'plam
  - Security Utilities  
  - System Information  
  - Miscellaneous  
+
+Endpointni tekshirish uchun eng ko'p ishlatiladigan ikkita Sysinternals vositalari:  
+ - **TCPView** - Networking Utility vositasi.
+ - **Process Explorer** - Process Utility vositasi.
+
