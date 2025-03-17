@@ -1,3 +1,4 @@
+                                               **Endpoint Security Monitoring**
 **Sysinternals**  
 Sysinternals vositalari Windows-ga asoslangan 70 dan ortiq vositalarning to'plamidir. Asboblarning har biri quyidagi toifalardan biriga kiradi:  
  - File and Disk Utilities  
@@ -28,3 +29,5 @@ Process Explorer-ning Asosiy Xususiyatlari:
  - **DLL va Handle tahlili** – jarayon tomonidan ishlatilayotgan fayllar, registr kalitlari va DLL kutubxonalarini ko‘rsatadi
  - **Virus va zararli dasturlarni aniqlash** – shubhali yoki zararli jarayonlarni tekshirishga yordam beradi
  - **Jarayonni majburan to‘xtatish** – tizim javob bermayotgan yoki zararli jarayonlarni o‘chirish imkonini beradi
+
+(https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer)
