@@ -11,3 +11,13 @@ Endpointni tekshirish uchun eng ko'p ishlatiladigan ikkita Sysinternals vositala
  - **TCPView** - Networking Utility vositasi.
  - **Process Explorer** - Process Utility vositasi.
 
+
+**TCPView** — bu Microsoft Sysinternals tomonidan ishlab chiqilgan tarmoq monitoring utilitasi bo‘lib, Windows tizimidagi faol TCP va UDP ulanishlarini real vaqtda kuzatib boradi. U har bir ulanish haqida quyidagi ma’lumotlarni ko‘rsatadi:    
+ - Jarayon nomi (qaysi dastur ulanishni ishlatayotgani)  
+ - Mahalliy va Uzoq IP manzillari (IP va port tafsilotlari)  
+ - Ulanish holati (LISTENING, ESTABLISHED, CLOSED va boshqalar)  
+ - Yuborilgan va qabul qilingan ma’lumotlar tezligi  
+
+(https://learn.microsoft.com/en-us/sysinternals/downloads/tcpview)
+
+
