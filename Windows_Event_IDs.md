@@ -12,12 +12,16 @@
 
 
 **2. Account & Group Changes**
- **4720**	A new user account was created
- **4722**	A user account was enabled
- **4725**	A user account was disabled
- **4726**	A user account was deleted
- **4738**	A user account was modified
- **4732**	A user was added to a security-enabled group
- **4733**	A user was removed from a security-enabled group
+ **4720**	A new user account was created (Yangi foydalanuvchi yaratildi)  
+ **4722**	A user account was enabled (Foydalanuvchi akkaunti faollashtirildi)  
+ **4725**	A user account was disabled (Foydalanuvchi akkaunti o‘chirildi)  
+ **4726**	A user account was deleted (Foydalanuvchi akkaunti o‘chirildi (Deleted))  
+ **4738**	A user account was modified (Foydalanuvchi akkaunti o‘zgartirildi)  
+ **4732**	A user was added to a security-enabled group (Foydalanuvchi guruhga qo‘shildi)  
+ **4733**	A user was removed from a security-enabled group (Foydalanuvchi guruhdan olib tashlandi)
+ **4756**	A user was added to a privileged group (Administrators, Domain Admins) (Foydalanuvchi muhim guruhga qo‘shildi (Administrators, Domain Admins))  
+ **4757**	A user was removed from a privileged group (Foydalanuvchi muhim guruhdan olib tashlandi)  
+
+ 
  **4756**	A user was added to a privileged group (Administrators, Domain Admins)
  **4757**	A user was removed from a privileged group
