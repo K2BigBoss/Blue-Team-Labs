@@ -31,3 +31,6 @@ Process Explorer-ning Asosiy Xususiyatlari:
  - **Jarayonni majburan to‘xtatish** – tizim javob bermayotgan yoki zararli jarayonlarni o‘chirish imkonini beradi
 
 (https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer)
+
+**Windows Event Logs**
+           C:\Windows\System32\winevt\Logs
