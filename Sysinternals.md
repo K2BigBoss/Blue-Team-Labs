@@ -53,4 +53,14 @@ C:\Program Files\osquery\ papkasida osqueryi.exe faylini qo‘lda ishga tushiris
 
 osquery> select pid,name,path from processes where name='lsass.exe';  
 
-**﻿Wazuh** ochiq manbali, erkin foydalanish mumkin bo'lgan va keng qamrovli EDR yechimi bo'lib, xavfsizlik muhandislari uni barcha miqyosdagi muhitda qo'llashlari mumkin.
+**﻿Wazuh** ochiq manbali, erkin foydalanish mumkin bo'lgan va keng qamrovli EDR yechimi bo'lib, xavfsizlik muhandislari uni barcha miqyosdagi muhitda qo'llashlari mumkin.  
+
+**Core Windows Processes**
+Task Manager -> Processes
+ - **Type** - Har bir jarayon 3 toifadan 1 tasiga kiradi (Apps, Background process, or Windows process).
+ - **Publisher** - bu ustunni dastur/fayl muallifining nomi.
+ - **PID** - Bu jarayon identifikatori raqami. Windows har safar dastur ishga tushganda noyob jarayon identifikatorini tayinlaydi. Agar bitta dasturda bir nechta ishlaydigan jarayonlar bo'lsa, ularning har biri o'ziga xos jarayon identifikatoriga (PID) ega bo'ladi.
+ - **Process name** - bu jarayonning fayl nomi (Taskmrg.exe).
+ - **Command line** - jarayonni boshlash uchun ishlatiladigan to'liq buyruq.  
+- **CPU** - jarayon foydalanadigan protsessor miqdori.
+- **Memory** - jarayon tomonidan ishlatiladigan jismoniy ishchi xotira miqdori. 
