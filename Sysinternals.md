@@ -63,4 +63,18 @@ Task Manager -> Processes
  - **Process name** - bu jarayonning fayl nomi (Taskmrg.exe).
  - **Command line** - jarayonni boshlash uchun ishlatiladigan to'liq buyruq.  
 - **CPU** - jarayon foydalanadigan protsessor miqdori.
-- **Memory** - jarayon tomonidan ishlatiladigan jismoniy ishchi xotira miqdori. 
+- **Memory** - jarayon tomonidan ishlatiladigan jismoniy ishchi xotira miqdori.
+
+**Ushbu jarayonlar haqida ko'proq ma'lumot olish uchun qo'shimcha ustunlar qo'shing. Qo'shish uchun yaxshi ustunlar Image path name va Command line.**  
+
+**Albatta, siz xohlagancha ko'p ustun qo'shishingiz mumkin, ammo joriy vazifangizga mos keladigan ustunlarni qo'shish tavsiya etiladi.**   
+
+Task Manager Parent-Child jarayoni ko'rinishini ko'rsatmaydi. Bu yerda Process Hacker va Process Explorer kabi boshqa yordamchi dasturlar yordamga keladi.    
+
+**Process Hacker**  
+https://sourceforge.net/projects/systeminformer/   
+
+**Process Explorer**   
+https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer  
+
+
