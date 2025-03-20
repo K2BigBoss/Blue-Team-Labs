@@ -26,6 +26,14 @@ bog‘langan bo‘ladi.
 profillarini o‘z ichiga oladi. HKEY_CURRENT_USER ushbu 
 kalitning ichki bo‘limi hisoblanadi.   
 
-**HKEY_LOCAL_MACHINE** - Kompyuterning barcha foydalanuvchilarga 
-tegishli konfiguratsiya ma’lumotlarini saqlaydi.  
+**HKEY_LOCAL_MACHINE** - Kompyuterning barcha foydalanuvchilarga tegishli konfiguratsiya ma’lumotlarini saqlaydi.  
+
+**HKEY_CLASSES_ROOT** — bu **HKEY_LOCAL_MACHINE\Software** subkaliti hisoblanadi. Bu yerda saqlanadigan ma'lumotlar Windows Explorer orqali fayl ochilganda to‘g‘ri dastur ishga tushishini ta'minlaydi.  
+
+ - Windows 2000 dan boshlab, ushbu ma'lumotlar **HKEY_LOCAL_MACHINE** va **HKEY_CURRENT_USER** kalitlari ostida saqlanadi. **HKEY_LOCAL_MACHINE\Software\Classes** kaliti mahalliy kompyuterning barcha foydalanuvchilariga tegishli standart sozlamalarni o‘z ichiga oladi. **HKEY_CURRENT_USER\Software\Classes** esa standart sozlamalarni o‘zgartirib, faqat interaktiv foydalanuvchiga tegishli sozlamalarni saqlaydi.  
+ - **HKEY_CLASSES_ROOT** bu ikki manbadan ma'lumotlarni birlashtirilgan holda ko‘rsatadi. Bu kalit eski Windows versiyalari uchun yozilgan dasturlar uchun ham ushbu birlashtirilgan ko‘rinishni taqdim etadi. Agar interaktiv foydalanuvchi uchun sozlamalarni o‘zgartirish kerak bo‘lsa, **HKEY_CLASSES_ROOT** o‘rniga **HKEY_CURRENT_USER\Software\Classes** ostida o‘zgarish kiritish lozim.
+ - Standart sozlamalarni o‘zgartirish uchun esa **HKEY_LOCAL_MACHINE\Software\Classes** ostida o‘zgarish kiritish kerak. Agar **HKEY_CLASSES_ROOT** ostida kalit yozilsa, tizim ushbu ma'lumotlarni **HKEY_LOCAL_MACHINE\Software\Classes** ostida saqlaydi.  
+ - Agar **HKEY_CLASSES_ROOT** ostidagi mavjud kalitga qiymat yozilsa va ushbu kalit **HKEY_CURRENT_USER\Software\Classes** ostida mavjud bo‘lsa, tizim ma'lumotlarni **HKEY_LOCAL_MACHINE\Software\Classes** o‘rniga **HKEY_CURRENT_USER\Software\Classes** ostida saqlaydi.
+
+**HKEY_CURRENT_CONFIG** mahalliy kompyuter tizim yuklanish vaqtida foydalanadigan apparat profili haqida ma'lumotlarni o‘z ichiga oladi.  
 
