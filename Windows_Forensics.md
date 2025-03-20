@@ -35,5 +35,30 @@ kalitning ichki bo‘limi hisoblanadi.
  - Standart sozlamalarni o‘zgartirish uchun esa **HKEY_LOCAL_MACHINE\Software\Classes** ostida o‘zgarish kiritish kerak. Agar **HKEY_CLASSES_ROOT** ostida kalit yozilsa, tizim ushbu ma'lumotlarni **HKEY_LOCAL_MACHINE\Software\Classes** ostida saqlaydi.  
  - Agar **HKEY_CLASSES_ROOT** ostidagi mavjud kalitga qiymat yozilsa va ushbu kalit **HKEY_CURRENT_USER\Software\Classes** ostida mavjud bo‘lsa, tizim ma'lumotlarni **HKEY_LOCAL_MACHINE\Software\Classes** o‘rniga **HKEY_CURRENT_USER\Software\Classes** ostida saqlaydi.
 
-**HKEY_CURRENT_CONFIG** mahalliy kompyuter tizim yuklanish vaqtida foydalanadigan apparat profili haqida ma'lumotlarni o‘z ichiga oladi.  
+**HKEY_CURRENT_CONFIG** mahalliy kompyuter tizim yuklanish vaqtida foydalanadigan apparat profili haqida ma'lumotlarni o‘z ichiga oladi.   
+Agar sizda faqat disk tasviriga (disk image) kirish imkoni bo‘lsa, registry hive-larining qayerda joylashganligini bilishingiz kerak bo‘ladi.  
+Ko‘pchilik hive-lar **C:\Windows\System32\Config** katalogida joylashgan bo‘lib, ular quyidagilardan iborat:  
+ - **DEFAULT** (mounted on **HKEY_USERS\DEFAULT**)
+ - **SAM** (mounted on **HKEY_LOCAL_MACHINE\SAM**)
+ - **SECURITY** (mounted on **HKEY_LOCAL_MACHINE\Security**)
+ - **SOFTWARE** (mounted on **HKEY_LOCAL_MACHINE\Software**)
+ - **SYSTEM (mounted on HKEY_LOCAL_MACHINE\System**)  
 
+**SAM (Security Account Manager)**: Foydalanuvchi hisoblarini, parol hashlarini va autentifikatsiya ma’lumotlarini saqlaydi.  
+
+**SECURITY**: Lokal xavfsizlik siyosatlari va tizim xavfsizligi bilan bog‘liq ma’lumotlarni saqlaydi.  
+
+**SYSTEM**: Kompyuterning apparat va yuklanish parametrlari haqida ma’lumot beradi.  
+
+**SOFTWARE**: O‘rnatilgan dasturlar va tizimda ro‘yxatdan o‘tgan ilovalar haqidagi ma’lumotlarni saqlaydi.  
+
+Foydalanuvchi ma'lumotlarini o'z ichiga olgan yana ikkita hiveni Foydalanuvchi profili katalogida topish mumkin **(C:\Users\<username>\)**.
+ - **NTUSER.DAT** (foydalanuvchi tizimga kirganda HKEY_CURRENT_USER da oʻrnatiladi)
+ - **USRCLASS.DAT** (HKEY_CURRENT_USER\Software\CLASSES da o'rnatilgan)  
+
+USRCLASS.DAT hive **C:\Users\<username>\AppData\Local\Microsoft\Windows** katalogda joylashgan. 
+
+**NTUSER.DAT** va **USRCLASS.DAT** yashirin fayllar ekanligini unutmang.  
+
+ - **NTUSER.DAT**: Har bir foydalanuvchining shaxsiy Windows sozlamalari, dasturlar konfiguratsiyasi va boshqa ma’lumotlarni saqlaydi.
+ - **USRCLASS.DAT**: Foydalanuvchi profili bilan bog‘liq sinflar (CLSID) va dastur sozlamalarini o‘z ichiga oladi.
