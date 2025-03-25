@@ -1,5 +1,5 @@
 https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon   
-https://github.com/olafhartong/sysmon-modular/blob/master/sysmonconfig.xml
+https://github.com/olafhartong/sysmon-modular/blob/master/sysmonconfig.xml   
 SysmonView -> https://github.com/nshalabi/SysmonTools/blob/master/SysmonView/64.zip    
 
 **1. Sysmon’ni o‘rnatish:**  
