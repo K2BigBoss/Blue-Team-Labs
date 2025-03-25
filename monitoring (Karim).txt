@@ -1,0 +1,46 @@
+Packet monitoring:
+tcpdump -i ens33 -vvv host 192.168.0.33 and port 80
+tcpdump -i ens33 src 192.168.0.33 and port 80
+tcpdump -i eth0 src 192.168.1.100 and \( port 80 or port 443 \)
+
+
+IPTABLES:
+iptables -L -v -n -  iptables qoidalarini ko‘rish;
+
+iptables -F - hamma qoidalarni o‘chirish;
+
+iptables -N MYCHAIN -  yangi zanjir yaratish;
+
+iptables -A INPUT -s <IP_MANZIL> -j DROP
+
+iptables -P FORWARD ACCEPT - FORWARD siyosatiga ruxsat berish yoki:
+sudo iptables -A FORWARD -i docker0 -o docker0 -j ACCEPT  - faqat Docker tarmog'iga ruxsat berish
+sudo iptables -A FORWARD -i docker0 -o eth0 -j ACCEPT
+sudo iptables -A FORWARD -i eth0 -o docker0 -j ACCEPT
+
+
+
+SNAP orqali dokerni boshqarish:
+snap list | grep docker - docker mavjudligini tekshirish
+sudo snap restart docker - dockerni restart qilish
+snap services docker - 
+
+
+Muayyan IP-manzillarni bloklash (DOCKER-USER orqali):
+iptables -I DOCKER-USER -s 192.168.1.100 -j DROP
+
+iptables-save | sudo tee /etc/iptables/rules.v4 - qoidalarni saqlash;
+apt install iptables-persistent  -  qoidalarni avtomatik yuklash imkonini beradi;
+
+
+IPTABLESS DELETE
+iptables -L -v --line-numbers - qoidalar ro‘yxatini ko'rish;
+iptables -D INPUT 3  -  INPUT zanjiridan 3-raqamli qoidani o‘chirish. INPUT zanjiridan boshqa zanjirni ham ko'rsatish mumkin. 
+
+
+DOCKER
+
+docker ps - ishlayotgan konteyner holatini ko'rish;
+docker ps -a - barcha konteynerlarni ko‘rish (ishlayotgan yoki o‘chirilgan);
+docker run -d --name my_project -p 80:80 nginx  -  NGINX konteynerini ishga tushirish, bunda 1-port tashqi tarmoq orqali murojaat porti, 2-port docker konteynerining porti;
+docker run -d --name my-nginx -p 192.168.1.100:8080:80 nginx -  faqat bitta IP uchun port bog‘lash;
