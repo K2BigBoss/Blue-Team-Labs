@@ -1,0 +1,187 @@
+📌 1. XOTIRA NUSXALARINI OLISH (Acquisition)
+🛠️ A. RAM (tezkor xotira) nusxasini olish
+RAM nusxasini olish – xotirada bo‘lib o‘tgan jarayonlar, shubhali kodlar va tarmoq ulanishlarini saqlab qolish imkonini beradi.
+
+🔎 Windows tizimida RAM olish
+Belgilangan vositalar:
+
+WinPMem – Windows uchun ochiq manbali vosita.
+
+DumpIt – RAM nusxasini tez olish uchun yengil vosita.
+
+Magnet RAM Capture – Tijoriy vosita, grafik interfeysga ega.
+
+✅ WinPMem yordamida RAM olish:
+
+powershell
+Копировать
+Редактировать
+winpmem.exe --output memory_dump.raw
+✅ DumpIt yordamida RAM olish:
+
+DumpIt vositasini yuklab oling.
+
+CLI yoki GUI orqali ishlating:
+
+bash
+Копировать
+Редактировать
+DumpIt.exe
+📌 Natija: Xotira nusxasi .raw yoki .dmp formatida olinadi.
+
+🔎 Linux tizimida RAM olish
+Belgilangan vositalar:
+
+LiME (Linux Memory Extractor) – Linux uchun eng yaxshi vosita.
+
+AVML (Azure Virtual Memory for Linux) – Yengil va tezkor.
+
+✅ LiME yordamida RAM olish:
+
+bash
+Копировать
+Редактировать
+sudo insmod lime.ko "path=/tmp/memory.lime format=raw"
+✅ AVML yordamida RAM olish:
+
+bash
+Копировать
+Редактировать
+sudo ./avml memory_dump.raw
+🔎 MacOS tizimida RAM olish
+Belgilangan vosita:
+
+OSXpmem yoki Memoryze.
+
+✅ OSXpmem yordamida RAM olish:
+
+bash
+Копировать
+Редактировать
+./osxpmem memory_dump.raw
+🛠️ B. Disk nusxasini olish (HDD/SSD)
+Disk nusxasini olish – buzilgan yoki shubhali tizimda to‘liq tahlil qilish uchun kerak.
+
+🔎 Windows tizimida disk nusxasi olish
+Belgilangan vositalar:
+
+FTK Imager – GUI asosida kuchli vosita.
+
+dd – Linuxda ishlatiladigan, Windowsda ham mavjud.
+
+dc3dd – Forensika uchun optimallashtirilgan versiyasi.
+
+✅ FTK Imager yordamida:
+
+"Create Disk Image" opsiyasidan foydalaning.
+
+Diskni to‘liq klonlash: .E01, .img formatda saqlang.
+
+✅ dd yordamida disk klonlash:
+
+powershell
+Копировать
+Редактировать
+dd if=\\.\PhysicalDrive0 of=C:\disk_image.dd bs=4M
+📌 PhysicalDrive0 – asosiy disk nomi.
+
+🔎 Linux tizimida disk nusxasi olish
+✅ dd yordamida:
+
+bash
+Копировать
+Редактировать
+sudo dd if=/dev/sda of=/mnt/evidence/disk_image.dd bs=4M status=progress
+✅ dc3dd yordamida:
+
+bash
+Копировать
+Редактировать
+sudo dc3dd if=/dev/sda of=/mnt/evidence/disk_image.dd hash=sha256
+📊 2. XOTIRA NUSXALARINI TAHLIL QILISH
+🧠 A. RAM tahlil qilish (Volatility yordamida)
+Volatility – eng mashhur RAM tahlil vositasi.
+
+✅ Volatility o‘rnatish (Linux uchun):
+
+bash
+Копировать
+Редактировать
+sudo apt install volatility
+✅ Tahlil qilish:
+
+Xotira nusxasining profilingni aniqlash:
+
+bash
+Копировать
+Редактировать
+vol.py -f memory_dump.raw imageinfo
+Faol jarayonlarni chiqarish:
+
+bash
+Копировать
+Редактировать
+vol.py -f memory_dump.raw --profile=Win10x64 pslist
+Tarmoq ulanishlarini tekshirish:
+
+bash
+Копировать
+Редактировать
+vol.py -f memory_dump.raw --profile=Win10x64 netscan
+O‘chirilgan jarayonlarni topish:
+
+bash
+Копировать
+Редактировать
+vol.py -f memory_dump.raw --profile=Win10x64 psscan
+📀 B. Disk nusxasini tahlil qilish (Autopsy yoki Sleuth Kit yordamida)
+Autopsy – Ko‘p platformali GUI vosita.
+
+Sleuth Kit – CLI orqali diskni tahlil qilish vositasi.
+
+✅ Sleuth Kit yordamida diskni tahlil qilish:
+
+Disk tarkibini ko‘rish:
+
+bash
+Копировать
+Редактировать
+fls -r disk_image.dd
+Faylni chiqarib olish:
+
+bash
+Копировать
+Редактировать
+icat disk_image.dd 1001 > extracted_file.exe
+📂 C. Hashlarni tekshirish (Dalillarni buzilmaganini tekshirish)
+✅ Disk yoki RAM imzosini hisoblash (MD5/SHA256):
+
+Linux:
+
+bash
+Копировать
+Редактировать
+md5sum memory_dump.raw
+sha256sum disk_image.dd
+Windows (PowerShell):
+
+powershell
+Копировать
+Редактировать
+Get-FileHash -Algorithm SHA256 C:\memory_dump.raw
+✅ Aniqlangan hashlarni VirusTotal yoki HybridAnalysis orqali tekshiring.
+
+🔒 3. XAVFSIZLIK CHORALARI (MITIGATION)
+Xotira va disk nusxalarini shifrlash va xavfsiz saqlash:
+
+OpenSSL yordamida shifrlash:
+
+bash
+Копировать
+Редактировать
+openssl enc -aes-256-cbc -in disk_image.dd -out disk_image.enc
+Dalillarni o‘zgartirmaslik uchun:
+
+Nusxalarni readonly (faqat o‘qish) rejimda saqlang.
+
+Hash qiymatlarini doimiy tekshirib boring.
